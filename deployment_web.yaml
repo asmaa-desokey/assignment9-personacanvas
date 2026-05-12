@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personacanvas-frontend
+  labels:
+    app: personacanvas-frontend
+    tier: frontend
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: personacanvas-frontend
+
+  template:
+    metadata:
+      labels:
+        app: personacanvas-frontend
+        tier: frontend
+
+    spec:
+      containers:
+        - name: frontend-container
+          image: personacanvas-frontend:v1
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8501
+
+          env:
+            - name: AI_SERVICE_URL
+              value: "http://personacanvas-backend-service:5000"
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
